@@ -1,27 +1,37 @@
-var util = require('util');
-var exec = require('child_process').execSync;
-var os = require('os');
+var Util = require('util');
+var Exec = require('child_process').execSync;
+var OS = require('os');
 
 function Deployer() {
-    this.user = 'khairul';
-    this.host = '172.18.26.120';
-    this.path = '/home/'+this.user+'/meteor-deploy';
-    this.bundleName = 'package.tar.gz';
-    this.bundlePath = os.tmpdir();
+    var cwd = process.cwd().split('/');
+    // this.user = 'khairul';
+    // this.host = '172.18.26.120';
+    this.user = 'jarvis';
+    this.host = '192.168.110.210';
+    this.appName = cwd[cwd.length-1];
+    this.remotePath = '/home/' + this.user + '/.deployer';
+    this.bundleName = this.appName + '.tar.gz';
+    this.bundlePath = OS.tmpdir();
+    this.bundle = this.bundlePath + '/' + this.bundleName;
 }
 
 Deployer.prototype = {
 
     constructor: Deployer,
 
-    createBundle: function() {
-        console.log("--- createBundle: ", this.bundlePath);
-        exec('meteor build '+this.bundlePath+' --server-only', this.logs);
+    createPath: function() {
+        console.log("* Create remote path:", this.remotePath);
+        Exec('ssh '+this.user+'@'+this.host+' -tq "mkdir -p '+this.remotePath+'"', this.logs);
     },
 
-    createPath: function() {
-        console.log("--- createPath");
-        exec('ssh '+this.user+'@'+this.host+' -tq "mkdir -p '+this.path+'"', this.logs);
+    createBundle: function() {
+        console.log("* Packaging bundle at", this.bundle);
+        Exec('meteor build '+this.bundlePath+' --server-only', this.logs);
+    },
+
+    pushBundle: function() {
+        console.log("* Pushing bundle to", this.remotePath+'/'+this.bundleName);
+        Exec('scp '+this.bundle+' '+this.user+'@'+this.host+':'+this.remotePath+'/'+this.bundleName, this.logs);
     },
 
     logs: function(error, stdout, stderr) {

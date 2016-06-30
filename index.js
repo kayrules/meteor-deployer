@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-const Deployer = require('./deployer.js');
-const deploy = new Deployer();
+var Deployer = require('./deployer.js');
+var deploy = new Deployer();
 
 deploy.createPath();
 deploy.createBundle();
+deploy.pushBundle();
