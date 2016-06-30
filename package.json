@@ -1,0 +1,24 @@
+{
+    "name": "meteor-deployer",
+    "version": "0.0.1",
+    "description": "Meteor-Redhat packager (Experimental)",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kayrules/meteor-deployer.git"
+    },
+    "author": "Khairulnizam Dahari <me@kayrules.com> (http://kayrules.com)",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/kayrules/meteor-deployer/issues"
+    },
+    "homepage": "https://github.com/kayrules/meteor-deployer#readme",
+    "dependencies": {
+    },
+    "bin": {
+        "deployer": "./index.js"
+    }
+}
